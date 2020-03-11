@@ -69,6 +69,10 @@ func resourceVariable() *schema.Resource {
 							Type:     schema.TypeString,
 							Optional: true,
 						},
+						"controlType": {
+							Type:     schema.TypeString,
+							Optional: true,
+						},
 						"description": {
 							Type:     schema.TypeString,
 							Optional: true,
@@ -172,6 +176,9 @@ func buildVariableResource(d *schema.ResourceData) *octopusdeploy.Variable {
 				Description: tfPromptList["description"].(string),
 				Label:       tfPromptList["label"].(string),
 				Required:    tfPromptList["required"].(bool),
+				DisplaySettings: octopusdeploy.VariablePromptDisplaySettings{
+					ControlType: tfPromptList["controlType"].(string),
+				},
 			}
 			newVar.Prompt = &newPrompt
 		}
