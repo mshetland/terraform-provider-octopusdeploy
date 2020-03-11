@@ -52,10 +52,15 @@ type VariableScope struct {
 	Tenant      []string `json:"Tenant,omitempty"`
 }
 
+type VariablePromptDisplaySettings struct {
+	ControlType string `json:"Octopus.ControlType"`
+}
+
 type VariablePromptOptions struct {
-	Label       string `json:"Label"`
-	Description string `json:"Description"`
-	Required    bool   `json:"Required"`
+	Label           string                        `json:"Label"`
+	DisplaySettings VariablePromptDisplaySettings `json:"DisplaySettings"`
+	Description     string                        `json:"Description"`
+	Required        bool                          `json:"Required"`
 }
 
 type ScopeValues struct {

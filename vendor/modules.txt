@@ -6,7 +6,6 @@ cloud.google.com/go/internal/optional
 cloud.google.com/go/internal/trace
 cloud.google.com/go/internal/version
 cloud.google.com/go/storage
-github.com/mshetland/go-octopusdeploy v0.6.2
 # github.com/agext/levenshtein v1.2.2
 github.com/agext/levenshtein
 # github.com/agl/ed25519 v0.0.0-20150830182803-278e1ec8e8a6
@@ -229,6 +228,8 @@ github.com/mitchellh/hashstructure
 github.com/mitchellh/mapstructure
 # github.com/mitchellh/reflectwalk v1.0.0
 github.com/mitchellh/reflectwalk
+# github.com/mshetland/go-octopusdeploy v1.6.3
+github.com/mshetland/go-octopusdeploy/octopusdeploy
 # github.com/oklog/run v1.0.0
 github.com/oklog/run
 # github.com/posener/complete v1.2.1
@@ -378,5 +379,7 @@ google.golang.org/grpc/stats
 google.golang.org/grpc/status
 google.golang.org/grpc/tap
 google.golang.org/grpc/test/bufconn
+# gopkg.in/go-playground/assert.v1 v1.2.1
+gopkg.in/go-playground/assert.v1
 # gopkg.in/go-playground/validator.v9 v9.21.0
 gopkg.in/go-playground/validator.v9
