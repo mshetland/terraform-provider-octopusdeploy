@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/OctopusDeploy/go-octopusdeploy/octopusdeploy"
+	"github.com/mshetland/go-octopusdeploy/octopusdeploy"
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
@@ -212,7 +212,7 @@ func buildMachineResource(d *schema.ResourceData) *octopusdeploy.Machine {
 	mEnvironments := getSliceFromTerraformTypeList(d.Get("environments"))
 	mRoles := getSliceFromTerraformTypeList(d.Get("roles"))
 	mDisabled := d.Get("isdisabled").(bool)
-	mTenantedDeploymentParticipation := d.Get("tenanteddeploymentparticipation").(string)
+	mTenantedDeploymentParticipation := d.Get("tenanteddeploymentparticipation").(int)
 	mTenantIDs := getSliceFromTerraformTypeList(d.Get("tenantids"))
 	mTenantTags := getSliceFromTerraformTypeList(d.Get("tenanttags"))
 
@@ -242,7 +242,7 @@ func buildMachineResource(d *schema.ResourceData) *octopusdeploy.Machine {
 		mEnvironments,
 		mRoles,
 		mMachinepolicy,
-		mTenantedDeploymentParticipation,
+		octopusdeploy.TenantedDeploymentMode(mTenantedDeploymentParticipation),
 		mTenantIDs,
 		mTenantTags,
 	)

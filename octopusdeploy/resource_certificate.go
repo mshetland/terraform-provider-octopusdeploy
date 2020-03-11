@@ -3,7 +3,7 @@ package octopusdeploy
 import (
 	"fmt"
 
-	"github.com/OctopusDeploy/go-octopusdeploy/octopusdeploy"
+	"github.com/mshetland/go-octopusdeploy/octopusdeploy"
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
@@ -91,7 +91,7 @@ func buildCertificateResource(d *schema.ResourceData) *octopusdeploy.Certificate
 	var certificateData string
 	var password string
 	var environmentIds []string
-	var tenantedDeploymentParticipation string
+	var tenantedDeploymentParticipation int
 	var tenantIds []string
 	var tenantTags []string
 
@@ -121,7 +121,7 @@ func buildCertificateResource(d *schema.ResourceData) *octopusdeploy.Certificate
 
 	tenantedDeploymentParticipationInterface, ok := d.GetOk("tenanted_deployment_participation")
 	if ok {
-		tenantedDeploymentParticipation = tenantedDeploymentParticipationInterface.(string)
+		tenantedDeploymentParticipation = tenantedDeploymentParticipationInterface.(int)
 	}
 
 	tenantIdsInterface, ok := d.GetOk("tenant_ids")
@@ -145,7 +145,7 @@ func buildCertificateResource(d *schema.ResourceData) *octopusdeploy.Certificate
 	var certificate = octopusdeploy.NewCertificate(certificateName, octopusdeploy.SensitiveValue{NewValue: certificateData}, octopusdeploy.SensitiveValue{NewValue: password})
 	certificate.Notes = notes
 	certificate.EnvironmentIds = environmentIds
-	certificate.TenantedDeploymentParticipation = tenantedDeploymentParticipation
+	certificate.TenantedDeploymentParticipation = octopusdeploy.TenantedDeploymentMode(tenantedDeploymentParticipation)
 	certificate.TenantIds = tenantIds
 	certificate.TenantTags = tenantTags
 
@@ -173,7 +173,21 @@ func resourceCertificateUpdate(d *schema.ResourceData, m interface{}) error {
 
 	client := m.(*octopusdeploy.Client)
 
-	updatedCertificate, err := client.Certificate.Replace(certificate)
+	var certificateData string
+	var password string
+
+	certificateDataInterface, ok := d.GetOk("certificate_data")
+	if ok {
+		certificateData = certificateDataInterface.(string)
+	}
+
+	passwordInterface, ok := d.GetOk("password")
+	if ok {
+		password = passwordInterface.(string)
+	}
+
+	certificateReplace := octopusdeploy.NewCertificateReplace(certificateData, password)
+	updatedCertificate, err := client.Certificate.Replace(certificate.ID, certificateReplace)
 
 	if err != nil {
 		return fmt.Errorf("error updating certificate id %s: %s", d.Id(), err.Error())

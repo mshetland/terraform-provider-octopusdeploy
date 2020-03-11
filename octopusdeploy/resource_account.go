@@ -3,7 +3,7 @@ package octopusdeploy
 import (
 	"fmt"
 
-	"github.com/OctopusDeploy/go-octopusdeploy/octopusdeploy"
+	"github.com/mshetland/go-octopusdeploy/octopusdeploy"
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
@@ -88,8 +88,8 @@ func resourceAccountRead(d *schema.ResourceData, m interface{}) error {
 	d.Set("name", account.Name)
 	d.Set("environments", account.EnvironmentIDs)
 	d.Set("account_type", account.AccountType)
-	d.Set("client_id", account.ClientId)
-	d.Set("tenant_id", account.TenantId)
+	d.Set("client_id", account.ClientID)
+	d.Set("tenant_id", account.TenantID)
 	d.Set("subscription_id", account.SubscriptionNumber)
 	d.Set("client_secret", account.Password)
 	d.Set("tenant_tags", account.TenantTags)
@@ -103,13 +103,13 @@ func buildAccountResource(d *schema.ResourceData) *octopusdeploy.Account {
 	accountName := d.Get("name").(string)
 
 	var environments []string
-	var accountType string
+	var accountType int
 	var clientId string
 	var tenantId string
 	var subscriptionId string
 	var clientSecret string
 	var tenantTags []string
-	var tenantedDeploymentParticipation string
+	var tenantedDeploymentParticipation int
 	var token string
 
 	environmentsInterface, ok := d.GetOk("environments")
@@ -119,7 +119,7 @@ func buildAccountResource(d *schema.ResourceData) *octopusdeploy.Account {
 
 	accountTypeInterface, ok := d.GetOk("account_type")
 	if ok {
-		accountType = accountTypeInterface.(string)
+		accountType = accountTypeInterface.(int)
 	}
 
 	clientIdInterface, ok := d.GetOk("client_id")
@@ -144,7 +144,7 @@ func buildAccountResource(d *schema.ResourceData) *octopusdeploy.Account {
 
 	tenantedDeploymentParticipationInterface, ok := d.GetOk("tenanted_deployment_participation")
 	if ok {
-		tenantedDeploymentParticipation = tenantedDeploymentParticipationInterface.(string)
+		tenantedDeploymentParticipation = tenantedDeploymentParticipationInterface.(int)
 	}
 
 	tenantTagsInterface, ok := d.GetOk("tenant_tags")
@@ -161,16 +161,16 @@ func buildAccountResource(d *schema.ResourceData) *octopusdeploy.Account {
 		token = tokenInterface.(string)
 	}
 
-	var account = octopusdeploy.NewAccount(accountName, accountType)
+	var account = octopusdeploy.NewAccount(accountName, octopusdeploy.AccountType(accountType))
 	account.EnvironmentIDs = environments
-	account.ClientId = clientId
-	account.TenantId = tenantId
+	account.ClientID = clientId
+	account.TenantID = tenantId
 	account.Password = octopusdeploy.SensitiveValue{
 		NewValue: clientSecret,
 	}
 	account.SubscriptionNumber = subscriptionId
 	account.TenantTags = tenantTags
-	account.TenantedDeploymentParticipation = tenantedDeploymentParticipation
+	account.TenantedDeploymentParticipation = octopusdeploy.TenantedDeploymentMode(tenantedDeploymentParticipation)
 	account.Token = octopusdeploy.SensitiveValue{
 		NewValue: token,
 	}

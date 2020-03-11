@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/OctopusDeploy/go-octopusdeploy/octopusdeploy"
+	"github.com/mshetland/go-octopusdeploy/octopusdeploy"
 	"github.com/hashicorp/terraform/helper/encryption"
 	"github.com/hashicorp/terraform/helper/schema"
 )
@@ -69,9 +69,10 @@ func resourceVariable() *schema.Resource {
 							Type:     schema.TypeString,
 							Optional: true,
 						},
-						"controlType": {
+						"control_type": {
 							Type:     schema.TypeString,
 							Optional: true,
+							Default:  "SingleLineText",
 						},
 						"description": {
 							Type:     schema.TypeString,
@@ -177,7 +178,7 @@ func buildVariableResource(d *schema.ResourceData) *octopusdeploy.Variable {
 				Label:       tfPromptList["label"].(string),
 				Required:    tfPromptList["required"].(bool),
 				DisplaySettings: octopusdeploy.VariablePromptDisplaySettings{
-					ControlType: tfPromptList["controlType"].(string),
+					ControlType: tfPromptList["control_type"].(string),
 				},
 			}
 			newVar.Prompt = &newPrompt

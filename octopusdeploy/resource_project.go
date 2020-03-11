@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/OctopusDeploy/go-octopusdeploy/octopusdeploy"
+	"github.com/mshetland/go-octopusdeploy/octopusdeploy"
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
@@ -1095,7 +1095,7 @@ func buildProjectResource(d *schema.ResourceData) *octopusdeploy.Project {
 	}
 
 	if attr, ok := d.GetOk("tenanted_deployment_mode"); ok {
-		project.TenantedDeploymentMode = attr.(string)
+		project.TenantedDeploymentMode = octopusdeploy.TenantedDeploymentMode(attr.(int))
 	}
 
 	if attr, ok := d.GetOk("included_library_variable_sets"); ok {

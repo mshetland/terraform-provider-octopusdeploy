@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/OctopusDeploy/go-octopusdeploy/octopusdeploy"
+	"github.com/mshetland/go-octopusdeploy/octopusdeploy"
 )
 
 // Config holds Address and the APIKey of the Octopus Deploy server
